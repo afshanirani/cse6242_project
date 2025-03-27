@@ -2,19 +2,7 @@ import json
 import sqlite3
 from flask import Flask, render_template
 
-app = Flask(__name__)
-
-def get_db_connection():
-    conn = sqlite3.connect('college.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-#Parameter Descriptions
-#degree: Students desired degree, must be a key present in the degree_to_pcip map defined in the route function
-#carnegieClass: students desired school size/setting, must be a valid carnegie classification as outlined in the data dictionary (ex. "Four-year, small, primarily nonresidential")
-@app.route('/<state>/<ZipCode>/<urbanization>/<major>/<carnegieClass>/<SATScore>/<ACTScore>/<familyIncome>/<schoolSize>/<degree>')
-def index(state=None, ZipCode=None, urbanization=None,major=None,carnegieClass= None,SATScore = None, ACTScore = None,familyIncome = None,schoolSize=None,degree=None):
-    degree_to_pcip = {
+degree_to_pcip = {
     "Agriculture, Agriculture Operations, And Related Sciences": "PCIP01",
     "Natural Resources And Conservation": "PCIP03",
     "Architecture And Related Services": "PCIP04",
@@ -54,8 +42,8 @@ def index(state=None, ZipCode=None, urbanization=None,major=None,carnegieClass= 
     "Business, Management, Marketing, And Related Support Services": "PCIP52",
     "History": "PCIP54",
 }
-    
-    carnegieClassification_map = {
+
+carnegieClassification_map = {
     "Not applicable": -2.0,
     "(Not classified)": 0.0,
     "Two-year, very small": 1.0,
@@ -77,6 +65,19 @@ def index(state=None, ZipCode=None, urbanization=None,major=None,carnegieClass= 
     "Four-year, large, highly residential": 17.0,
     "Exclusively graduate/professional": 18.0,
 }
+
+app = Flask(__name__)
+
+def get_db_connection():
+    conn = sqlite3.connect('college.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+#Parameter Descriptions
+#degree: Students desired degree, must be a key present in the degree_to_pcip map defined in the route function
+#carnegieClass: students desired school size/setting, must be a valid carnegie classification as outlined in the data dictionary (ex. "Four-year, small, primarily nonresidential")
+@app.route('/<state>/<ZipCode>/<urbanization>/<carnegieClass>/<SATScore>/<ACTScore>/<familyIncome>/<schoolSize>/<degree>')
+def index(state=None, ZipCode=None, urbanization=None,major=None,carnegieClass= None,SATScore = None, ACTScore = None,familyIncome = None,schoolSize=None,degree=None):
     
     degreePcip = degree_to_pcip[degree]
     carnegieClassNum = carnegieClassification_map[carnegieClass]
