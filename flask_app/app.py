@@ -88,6 +88,8 @@ def index(state=None, ZipCode=None, urbanization=None,major=None,carnegieClass= 
 
     # Execute the query with the value parameterized
     rows = conn.execute(query, (carnegieClassNum,)).fetchall()
+
+    #algorithm
     result_list = [dict(row) for row in rows]
     json_string = json.dumps(result_list, indent=2)
 
