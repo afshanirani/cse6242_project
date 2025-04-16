@@ -11,18 +11,19 @@ from geopy.geocoders import Nominatim
 
 client = Client('http://localhost:9004/')
 
-def retrieveSchools(df, state=None, UserZipCode=None, desiredZipCode=None, maximumRadius=None, urbanization=None,
-                    major=None, SATScore=None, ACTScore=None, familyIncome=None, schoolSize=None, tuitionBudget=None, yearsToRepay=None):
+def retrieveSchools(df, state=None, desiredZipCode=None, maximumRadius=None, urbanization=None,
+                    major=None, SATScore=None, ACTScore=None, familyIncome=None, schoolSize=None, tuitionBudget=None, yearsToRepay=None,
+                    weightMajor=0, weightSchoolSize=0, weightRadius=0, weightUrbanization=0, weightSAT=0, weightACT=0, weightTuition=0, weightRepayment=0):
     #algorithm here
 
     # Preprocessing:
 
-    # Filter out closed institutions and graduate schools
-    df = df[df['CCSIZSET'] != 18 & df['CURROPER'] == 1]
+    # Filter out closed institutions and graduate schools, 2-year schools
+    df = df[(df['CCSIZSET'] not in (1, 2, 3, 4, 5, 18)) & (df['CURROPER'] == 1)]
 
     # Change values of Carnegie Class (1=very small, 2=small, 3=medium, 4=large, 4.5=very large
     df['CCSIZSET'] = df['CCSIZSET'].replace(
-        {0: -2, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 3, 13: 3, 14: 3, 5: 4.5, 15: 4, 16: 4, 17: 4})
+        {6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 3, 13: 3, 14: 3, 5: 4.5, 15: 4, 16: 4, 17: 4})
     # Change values of Locale city size (1=Distant Rural, 4 = Distant Town, 7=Small Suburb, 8=Midsize Suburb, 9= Large Suburb, 12=Small City, 13=Midsize City, 14=Large City)
     df['LOCALE'] = df['LOCALE'].replace(
         {11: 14, 12: 13, 13: 12, 21: 9, 22: 8, 23: 7, 31: 4, 32: 4, 33: 4, 41: 1, 42: 1, 43: 1})
@@ -56,11 +57,6 @@ def retrieveSchools(df, state=None, UserZipCode=None, desiredZipCode=None, maxim
         df['radius_e'] = 0
     else:
         # Get user coordinates based on inputted zip code
-        # nomi = pgeocode.Nominatim('us')
-        # coord = nomi.query_postal_code(desiredZipCode)
-        # desired_lat = coord['latitude']
-        # desired_lon = coord['longitude']
-
         geo = Nominatim()
         location = geo.geocode({'postalcode': desiredZipCode, 'country': 'US'})
         desired_lat = location.latitude
@@ -94,13 +90,13 @@ def retrieveSchools(df, state=None, UserZipCode=None, desiredZipCode=None, maxim
     else:
         df['major_e'] = (1 - df[f'PCIP{major}']) ** 2
 
-    # School size calculations
-    if schoolSize is None:
+    # School size calculations (ignore 0 and -2)
+    if schoolSize is None or df['CCSIZSET'] in (0,-2):
         df['cc_e'] = 0
     else:
         df['cc_e'] = (schoolSize - df['CCSIZSET']) ** 2
 
-    # Tuition calculations (inflate from 2022 to 2025 dollars
+    # Tuition calculations
     if tuitionBudget is None:
         df['tuition_e'] = 0
     else:
@@ -134,33 +130,25 @@ def retrieveSchools(df, state=None, UserZipCode=None, desiredZipCode=None, maxim
 
         df['repay_e'] = (yearsToRepay - df['years']) ** 2 if df['years'] > yearsToRepay else 0
 
-    """ Different format, cleaner
-    calculations = {
-    'urban_e': lambda df: 0 if urbanization is None else (urbanization - df['LOCALE']) ** 2,
-    'sat_e': lambda df: 0 if SATScore is None else (df['SAT_AVG'] - SATScore if df['SAT_AVG'] > SATScore else 0),
-    'grad_e': lambda df: 0 if grad_rate is None else abs(df['GRAD_RATE'] - grad_rate),
-    }
-    for col, func in calculations.items():
-        df[col] = func(df)
-    """
 
-    # Perform the actual Euclidean distance calculation (NEED TO UPDATE THIS:
-    cols = df['major_e'], df['cc_e'], df['radius_e'], df['urban_e'], df['test_e']
-    for col in cols:
-        df['score'] += df['major_weight'] * col
+    # Perform the actual Euclidean distance calculation:
+    cols = [df['major_e'], df['cc_e'], df['radius_e'], df['urban_e'], df['sat_e'], df['act_e'], df['tuition_e'], df['repay_e']]
+    weights = [weightMajor, weightSchoolSize, weightRadius, weightUrbanization, weightSAT, weightACT, weightTuition, weightRepayment]
+    for i in range(len(cols)):
+        df['score'] += cols[i] * weights[i]
 
     df['score'] = sqrt(df['score'])
 
-    # return score for each school in an array
+    # return score for each school
 
     return df['score']
 
 
 def perform_polynomial(row):
     """
-    Perform the whole polynomial regression to get years 2-18 of earnings after graduating
-    :param row:
-    :return:
+    Perform the whole polynomial regression to get years 2-20 of earnings after graduating
+    :param row: row from the dataframe
+    :return: list of earnings from year 2-20
     """
     # Get only the earning rows
     row_earn = row[
