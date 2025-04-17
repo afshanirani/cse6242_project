@@ -12,87 +12,33 @@ from geopy.geocoders import Nominatim
 client = Client('http://localhost:9004/')
 
 def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSize, familyIncome,userSAT, userACT,
-                    major,tuitionBudget, yearsRepay,weights,school_name,stabbr,latitude, longitude,tuition_in,
+                    major,tuitionBudget, yearsRepay,weight1,weight2,weight3,school_name,stabbr,latitude, longitude,tuition_in,
                     tuition_out,ccsizset,curroper, locale,md_earn10,md_earn11,md_earn6, md_earn7,md_earn8, md_earn9,
                     npt41_priv, npt41_pub, npt42_priv,npt42_pub, npt43_priv, npt43_pub,npt44_priv, npt44_pub,npt45_priv,
                     npt45_pub,Pcip01,Pcip03,Pcip04,Pcip05,Pcip09,Pcip10,Pcip11,Pcip12,Pcip13,Pcip14,Pcip15,Pcip16,
                     Pcip19,Pcip22,Pcip23,Pcip24,Pcip25,Pcip26,Pcip27,Pcip29,Pcip30,Pcip31,Pcip38,Pcip39,Pcip40,Pcip41,
-                    Pcip42,Pcip43,Pcip44,Pcip45,Pcip46,Pcip47,Pcip48,Pcip49,Pcip50,Pcip51,Pcip52,Pcip54,sat_avg,act_cmmid):
+                    Pcip42,Pcip43,Pcip44,Pcip45,Pcip46,Pcip47,Pcip48,Pcip49,Pcip50,Pcip51,Pcip52,Pcip54,sat_avg,actcmmid):
 
 
-    #algorithm here
-
-    # Preprocessing:
+    ## Preprocessing:
 
     # Recreate the df:
     df = pd.DataFrame({
-        "school_name": school_name,
-        "stabbr": stabbr,
-        "latitude": latitude,
-        "longitude": longitude,
-        "tuition_in": tuition_in,
-        "tuition_out": tuition_out,
-        "ccsizset": ccsizset,
-        "curroper": curroper,
-        "locale": locale,
-        "md_earn10": md_earn10,
-        "md_earn11": md_earn11,
-        "md_earn6": md_earn6,
-        "md_earn7": md_earn7,
-        "md_earn8": md_earn8,
-        "md_earn9": md_earn9,
-        "npt41_priv": npt41_priv,
-        "npt41_pub": npt41_pub,
-        "npt42_priv": npt42_priv,
-        "npt42_pub": npt42_pub,
-        "npt43_priv": npt43_priv,
-        "npt43_pub": npt43_pub,
-        "npt44_priv": npt44_priv,
-        "npt44_pub": npt44_pub,
-        "npt45_priv": npt45_priv,
-        "npt45_pub": npt45_pub,
-        "Pcip01": Pcip01,
-        "Pcip03": Pcip03,
-        "Pcip04": Pcip04,
-        "Pcip05": Pcip05,
-        "Pcip09": Pcip09,
-        "Pcip10": Pcip10,
-        "Pcip11": Pcip11,
-        "Pcip12": Pcip12,
-        "Pcip13": Pcip13,
-        "Pcip14": Pcip14,
-        "Pcip15": Pcip15,
-        "Pcip16": Pcip16,
-        "Pcip19": Pcip19,
-        "Pcip22": Pcip22,
-        "Pcip23": Pcip23,
-        "Pcip24": Pcip24,
-        "Pcip25": Pcip25,
-        "Pcip26": Pcip26,
-        "Pcip27": Pcip27,
-        "Pcip29": Pcip29,
-        "Pcip30": Pcip30,
-        "Pcip31": Pcip31,
-        "Pcip38": Pcip38,
-        "Pcip39": Pcip39,
-        "Pcip40": Pcip40,
-        "Pcip41": Pcip41,
-        "Pcip42": Pcip42,
-        "Pcip43": Pcip43,
-        "Pcip44": Pcip44,
-        "Pcip45": Pcip45,
-        "Pcip46": Pcip46,
-        "Pcip47": Pcip47,
-        "Pcip48": Pcip48,
-        "Pcip49": Pcip49,
-        "Pcip50": Pcip50,
-        "Pcip51": Pcip51,
-        "Pcip52": Pcip52,
-        "Pcip54": Pcip54,
-        "sat_avg": sat_avg,
-        "act_cmmid": act_cmmid
+        "school_name": school_name, "stabbr": stabbr, "latitude": latitude, "longitude": longitude, "tuition_in": tuition_in,
+        "tuition_out": tuition_out, "ccsizset": ccsizset, "curroper": curroper, "locale": locale, "md_earn10": md_earn10,
+        "md_earn11": md_earn11, "md_earn6": md_earn6, "md_earn7": md_earn7, "md_earn8": md_earn8, "md_earn9": md_earn9,
+        "npt41_priv": npt41_priv, "npt41_pub": npt41_pub, "npt42_priv": npt42_priv, "npt42_pub": npt42_pub, "npt43_priv": npt43_priv,
+        "npt43_pub": npt43_pub, "npt44_priv": npt44_priv, "npt44_pub": npt44_pub, "npt45_priv": npt45_priv, "npt45_pub": npt45_pub,
+        "Pcip01": Pcip01, "Pcip03": Pcip03, "Pcip04": Pcip04, "Pcip05": Pcip05, "Pcip09": Pcip09, "Pcip10": Pcip10,
+        "Pcip11": Pcip11, "Pcip12": Pcip12, "Pcip13": Pcip13, "Pcip14": Pcip14, "Pcip15": Pcip15, "Pcip16": Pcip16,
+        "Pcip19": Pcip19, "Pcip22": Pcip22, "Pcip23": Pcip23, "Pcip24": Pcip24, "Pcip25": Pcip25, "Pcip26": Pcip26,
+        "Pcip27": Pcip27, "Pcip29": Pcip29, "Pcip30": Pcip30, "Pcip31": Pcip31, "Pcip38": Pcip38, "Pcip39": Pcip39,
+        "Pcip40": Pcip40, "Pcip41": Pcip41, "Pcip42": Pcip42, "Pcip43": Pcip43, "Pcip44": Pcip44, "Pcip45": Pcip45,
+        "Pcip46": Pcip46, "Pcip47": Pcip47, "Pcip48": Pcip48, "Pcip49": Pcip49, "Pcip50": Pcip50, "Pcip51": Pcip51,
+        "Pcip52": Pcip52, "Pcip54": Pcip54, "sat_avg": sat_avg, "actcmmid": actcmmid
     })
 
+    ## Data cleaning and prep:
 
     # Filter out closed institutions and graduate schools, 2-year schools
     df = df[(df['ccsizset'] not in (1, 2, 3, 4, 5, 18)) & (df['CURROPER'] == 1)]
@@ -106,7 +52,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
 
     # Inflate tuition to 2025
     df['tuition_in'] *= 1.1006
-    df['TUITION_OUT'] *= 1.1006
+    df['tuition_out'] *= 1.1006
 
     # Inflate earnings from 2021/2022 dollars to 2025 dollars
     df['md_earn6'] *= 1.1006
@@ -116,29 +62,52 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['md_earn10'] *= 1.1006
     df['md_earn11'] *= 1.1887
 
-    # Get the projected earnings for years 2-20 after graduating
+    # Combine net price column with either public and private NPT and inflate to 2025 dollars
+    df['npt41'] = df['npt41_pub'].fillna(df['npt41_priv'])
+    df['npt42'] = df['npt41_pub'].fillna(df['npt42_priv'])
+    df['npt43'] = df['npt41_pub'].fillna(df['npt43_priv'])
+    df['npt44'] = df['npt41_pub'].fillna(df['npt44_priv'])
+    df['npt45'] = df['npt41_pub'].fillna(df['npt45_priv'])
+
+    df = df.drop(columns = ['npt41_pub', 'npt_41_priv', 'npt42_pub', 'npt_42_priv', 'npt43_pub', 'npt_43_priv',
+                            'npt44_pub', 'npt_44_priv', 'npt45_pub', 'npt_45_priv'])
+
+    df['npt41'] *= 1.1006
+    df['npt42'] *= 1.1006
+    df['npt43'] *= 1.1006
+    df['npt44'] *= 1.1006
+    df['npt45'] *= 1.1006
+
+    # Run polynomial model to get the projected earnings for years 2-20 after graduating
     df['earnings'] = df.apply(perform_polynomial, axis=1)
 
-    # Coalesce coa for public and private (might need to coalesce with more)
-    df['npt41_pub'] = df['npt41_pub'].fillna(df['npt41_priv'])
-    df['npt42_pub'] = df['npt41_pub'].fillna(df['npt42_priv'])
-    df['npt43_pub'] = df['npt41_pub'].fillna(df['npt43_priv'])
-    df['npt44_pub'] = df['npt41_pub'].fillna(df['npt44_priv'])
-    df['npt45_pub'] = df['npt41_pub'].fillna(df['npt45_priv'])
+    # Normalize needed algorithm columns and user inputs
+    user_norm = {'sat_avg': userSAT, 'actcmmid': userACT, 'ccsizset':desiredSchoolSize, 'locale':desiredUrbanization,
+                 'tuition_in': tuitionBudget, 'tuition_out': tuitionBudget,'miles_away': searchRadius}
+    cols = ['sat_avg', 'actcmmid', 'ccsizset', 'locale', 'tuition_in']
 
-    # Code that needs to be run each time
+    for col in cols:
+        normalize_col_and_user(df, user_norm, col)
+
+
+    ## Algorithm calculations:
 
     # Radius calculations
     if userZIP is None:
         df['radius_e'] = 0
+        userStabbr = ''
     else:
         # Get user coordinates based on inputted zip code
         geo = Nominatim()
         location = geo.geocode({'postalcode': userZIP, 'country': 'US'})
         desired_lat = location.latitude
         desired_lon = location.longitude
+        userStabbr = location.get('state_code')
 
         df['miles_away'] = geodesic((desired_lat, desired_lon), (df['latitude'], df['longitude']))
+
+        # Normalize radius and miles_away
+        normalize_col_and_user(df, user_norm, 'miles_away')
 
         df['radius_e'] = (df['miles_away'] - searchRadius) ** 2 if df['miles_away'] > searchRadius else 0
 
@@ -146,21 +115,21 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     if desiredUrbanization is None:
         df['urban_e'] = 0
     else:
-        df['urban_e'] = (desiredUrbanization - df['locale']) ** 2
+        df['urban_e'] = (user_norm['locale'] - df['locale']) ** 2
 
     # SAT score calculation
     if userSAT is None:
         df['sat_e'] = 0
     else:
-        df['sat_e'] = (df['sat_avg'] - userSAT) if df['sat_avg'] > userSAT else 0
+        df['sat_e'] = (df['sat_avg'] - user_norm['sat_avg']) if df['sat_avg'] > user_norm['sat_avg'] else 0
 
     # ACT score calculation
     if userACT is None:
         df['act_e'] = 0
     else:
-        df['act_e'] = (df['act_cmmid'] - userACT) ** 2 if df['act_cmmid'] > userACT else 0
+        df['act_e'] = (df['actcmmid'] - userACT) ** 2 if df['actcmmid'] > user_norm['actcmmid'] else 0
 
-    # Major calculations (assumes major will come in as a number from the mapping)
+    # Major calculations (converts major to corresponding column using get_major_col)
     if major is None:
         df['major_e'] = 0
     else:
@@ -171,13 +140,16 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     if desiredSchoolSize is None or df['ccsizset'] in (0,-2):
         df['cc_e'] = 0
     else:
-        df['cc_e'] = (desiredSchoolSize - df['ccsizset']) ** 2
+        df['cc_e'] = (user_norm['ccsizset'] - df['ccsizset']) ** 2
 
     # Tuition calculations
     if tuitionBudget is None:
         df['tuition_e'] = 0
     else:
-        df['tuition_e'] = (tuitionBudget - df['tuition_in']) ** 2 if df['tuition_in'] > tuitionBudget else 0
+        if df['stabbr'] == userStabbr:
+            df['tuition_e'] = (user_norm['tuition_in'] - df['tuition_in']) ** 2 if df['tuition_in'] > tuitionBudget else 0
+        else:
+            df['tuition_e'] = (user_norm['tuition_out'] - df['tuition_out']) ** 2 if df['tuition_out'] > tuitionBudget else 0
 
     # Years to repayment calculations
     if yearsRepay is None:
@@ -185,15 +157,15 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     else:
         # Calculate years to repayment
         if familyIncome == '0-30000':
-            coa = df['npt41_pub'] * 4
+            coa = df['npt41'] * 4
         elif familyIncome == '30001-48000':
-            coa = df['npt42_pub'] * 4
+            coa = df['npt42'] * 4
         elif familyIncome == '48001-75000':
-            coa = df['npt43_pub'] * 4
+            coa = df['npt43'] * 4
         elif familyIncome == '75001-111000':
-            coa = df['npt44_pub'] * 4
+            coa = df['npt44'] * 4
         else:
-            coa = df['npt45_pub'] * 4
+            coa = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
         for i, rpmt in enumerate(df['earnings']):
@@ -205,19 +177,38 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         if coa > 0:
             df['years'] = 21
 
+        # Normalize years and yearsRepay
+        df['years'] = (df['years'] - 1) / 20
+        yearsRepay = (yearsRepay - 1) / 20
+
         df['repay_e'] = (yearsRepay - df['years']) ** 2 if df['years'] > yearsRepay else 0
 
 
     # Perform the actual Euclidean distance calculation:
-    cols = [df['major_e'], df['cc_e'], df['radius_e'], df['urban_e'], df['sat_e'], df['act_e'], df['tuition_e'], df['repay_e']]
-    #weights = weights
-    for i in range(len(cols)):
-        df['score'] += cols[i] * weights[i]
+    weight_cols = {
+        'Desired Major': 'major_e',
+        'Desired School Size': 'cc_e',
+        'Search Radius': 'radius_e',
+        'Desired Degree of Urbanization': 'urban_e',
+        'User SAT Score': 'sat_e',
+        'User ACT Score': 'act_e',
+        'Tuition Budget': 'tuition_e',
+        'Desired Years to Repay': 'repay_e'
+    }
+    weights = {key: 1 for key in weight_cols}
+    # Add extra weighting to user's top factors
+    weights[weight1] = 4
+    weights[weight2] = 3
+    weights[weight3] = 2
+
+    df['score'] = 0
+    # Add each column score * column weight to the total score
+    for key, col in weight_cols.items():
+        df['score'] += df[col] * weights[key]
 
     df['score'] = sqrt(df['score'])
 
     # return score for each school
-
     return df['score']
 
 
@@ -258,8 +249,6 @@ def perform_polynomial(row):
     y_pred = poly_lin.predict(X_poly_future)
 
     ys = y.flatten().tolist() + y_pred.flatten().tolist()
-    # Convert predictions back into a dataframe
-    # df_pred = pd.DataFrame(y_pred.tolist(), columns=[f'MD_EARN_WNE_P{i}' for i in range(12,21)])
 
     return ys
 
@@ -305,6 +294,19 @@ def get_major_col(major):
         "History": "PCIP54",
     }
     return degree_to_pcip[major]
+
+def normalize_col_and_user(df, user_norm, col):
+    """
+    Normalize the column using min-max normalization and updates the user's input with the same scale
+    :param df: college pandas dataframe
+    :param user_norm: dictionary of column name: user variable
+    :param col: column name to normalize
+    """
+    cmin = df[col].min()
+    cmax = df[col].max()
+    df[col] = (df[col] - cmin) / (cmax - cmin)
+    user_norm[col] = (user_norm[col] - cmin) / (cmax - cmin)
+
 
 client.deploy('retrieveSchools',
               retrieveSchools,
