@@ -91,7 +91,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     desiredUrbanization = urban_dict[desiredUrbanization[0]]
 
     cc_dict = {"Very Small":1, "Small":2, "Medium":3, "Large":4}
-    desiredSchoolSize = cc_dict[desiredSchoolSize]
+    desiredSchoolSize = cc_dict[desiredSchoolSize[0]]
 
     userSAT = userSAT[0]
     userACT = userACT[0]
@@ -124,7 +124,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         userStabbr = ''
     else:
         # Get user coordinates based on inputted zip code
-        geo = Nominatim()
+        geo = Nominatim(user_agent="xyz")
         location = geo.geocode({'postalcode': userZIP, 'country': 'US'})
         desired_lat = location.latitude
         desired_lon = location.longitude
