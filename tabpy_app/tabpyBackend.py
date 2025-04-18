@@ -69,8 +69,8 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['npt44'] = df['npt41_pub'].fillna(df['npt44_priv'])
     df['npt45'] = df['npt41_pub'].fillna(df['npt45_priv'])
 
-    df = df.drop(columns = ['npt41_pub', 'npt_41_priv', 'npt42_pub', 'npt_42_priv', 'npt43_pub', 'npt_43_priv',
-                            'npt44_pub', 'npt_44_priv', 'npt45_pub', 'npt_45_priv'])
+    df = df.drop(columns = ['npt41_pub', 'npt41_priv', 'npt42_pub', 'npt42_priv', 'npt43_pub', 'npt43_priv',
+                            'npt44_pub', 'npt44_priv', 'npt45_pub', 'npt45_priv'])
 
     df['npt41'] *= 1.1006
     df['npt42'] *= 1.1006
