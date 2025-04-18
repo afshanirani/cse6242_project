@@ -197,15 +197,6 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         # Calculate years to repay given total coa and projected earnings
         df['years'] = df.apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']), axis=1)
 
-        # for i, rpmt in enumerate(df['earnings']):
-        #     coa -= (rpmt[i] * .1)
-        #     if coa <= 0:
-        #         df['years'] = i + 2
-        #         break
-        # # If still haven't broken even, set years to 21
-        # if coa > 0:
-        #     df['years'] = 21
-
         # Normalize years and yearsRepay
         df['years'] = (df['years'] - 1) / 20
         yearsRepay = (yearsRepay - 1) / 20
@@ -236,6 +227,8 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['score'] += df[col] * weights[key]
 
     df['score'] = np.sqrt(df['score'])
+
+    df['score'] = df['score'].fillna(999999)
 
     # return score for each school
     return df['score'].to_list()
