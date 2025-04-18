@@ -216,11 +216,11 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         'Tuition Budget': 'tuition_e',
         'Desired Years to Repay': 'repay_e'
     }
-    weights = {key: 1 for key in weight_cols}
+    weights = {key: 5 for key in weight_cols}
     # Add extra weighting to user's top factors
-    weights[weight1] = 4
-    weights[weight2] = 3
-    weights[weight3] = 2
+    weights[weight1] = 1
+    weights[weight2] = 2
+    weights[weight3] = 3
 
     df['score'] = 0
     # Add each column score * column weight to the total score
