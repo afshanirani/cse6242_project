@@ -87,10 +87,10 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['earnings'] = df.apply(perform_polynomial, axis=1)
 
     ## Process user inputs:
-    urban_dict = {"Distant Rural": 1, "Distant Town": 4, "Small Suburb": 7, "Midsize Suburb": 8, "Large Suburb":9, "Small City":12, "Midsize City":13, "Large City":14}
+    urban_dict = {"None": 0, "Distant Rural": 1, "Distant Town": 4, "Small Suburb": 7, "Midsize Suburb": 8, "Large Suburb":9, "Small City":12, "Midsize City":13, "Large City":14}
     desiredUrbanization = urban_dict[desiredUrbanization[0]]
 
-    cc_dict = {"Very Small":1, "Small":2, "Medium":3, "Large":4}
+    cc_dict = {"None":0, "Very Small":1, "Small":2, "Medium":3, "Large":4}
     desiredSchoolSize = cc_dict[desiredSchoolSize[0]]
 
     userSAT = userSAT[0]
@@ -119,7 +119,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     ## Algorithm calculations:
 
     # Radius calculations
-    if userZIP is None:
+    if userZIP == "None":
         df['radius_e'] = 0
         userStabbr = ''
     else:
@@ -141,32 +141,32 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['radius_e'] = np.where(df['miles_away'] > searchRadius, (df['miles_away'] - searchRadius) ** 2, 0)
 
     # desiredUrbanization calculations
-    if desiredUrbanization is None:
+    if desiredUrbanization == 0:
         df['urban_e'] = 0
     else:
         df['urban_e'] = (user_norm['locale'] - df['locale']) ** 2
 
     # SAT score calculation
-    if userSAT is None:
+    if userSAT == 0:
         df['sat_e'] = 0
     else:
         df['sat_e'] = (df['sat_avg'] - user_norm['sat_avg']) **2
 
     # ACT score calculation
-    if userACT is None:
+    if userACT == 0:
         df['act_e'] = 0
     else:
         df['act_e'] = (df['actcmmid'] - user_norm['actcmmid']) **2
 
     # Major calculations (converts major to corresponding column using get_major_col)
-    if major is None:
+    if major == "None":
         df['major_e'] = 0
     else:
         major_col = get_major_col(major)
         df['major_e'] = (1 - df[major_col]) ** 2
 
     # School size calculations (ignore 0 and -2)
-    if desiredSchoolSize is None or df['ccsizset'].isin([0,-2]).any():
+    if desiredSchoolSize == 0 or df['ccsizset'].isin([0,-2]).any():
         df['cc_e'] = 0
     else:
         df['cc_e'] = (user_norm['ccsizset'] - df['ccsizset']) ** 2
