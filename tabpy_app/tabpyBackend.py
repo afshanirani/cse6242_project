@@ -282,7 +282,7 @@ def perform_polynomial(row):
     return ys
 
 def get_major_col(major):
-    degree_to_PCIP = {
+    degree_to_pcip = {
         "Agriculture, Agriculture Operations, And Related Sciences": "PCIP01",
         "Natural Resources And Conservation": "PCIP03",
         "Architecture And Related Services": "PCIP04",
