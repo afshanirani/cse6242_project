@@ -166,7 +166,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['major_e'] = (1 - df[major_col]) ** 2
 
     # School size calculations (ignore 0 and -2)
-    if desiredSchoolSize is None or df['ccsizset'] in (0,-2):
+    if desiredSchoolSize is None or df['ccsizset'] in [0,-2]:
         df['cc_e'] = 0
     else:
         df['cc_e'] = (user_norm['ccsizset'] - df['ccsizset']) ** 2
