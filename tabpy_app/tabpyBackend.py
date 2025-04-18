@@ -78,8 +78,20 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['npt44'] *= 1.1006
     df['npt45'] *= 1.1006
 
+    # Impute NAs using median
+    for col in ['sat_avg', 'actcmmid', 'ccsizset', 'locale', 'tuition_in', 'tuition_out', 'md_earn6', 'md_earn7',
+                'md_earn8', 'md_earn9', 'md_earn10', 'md_earn11']:
+        df[col] = df[col].fillna(df[col].median())
+
     # Run polynomial model to get the projected earnings for years 2-20 after graduating
     df['earnings'] = df.apply(perform_polynomial, axis=1)
+
+    ## Process user inputs:
+    urbanization = {"Distant Rural": 1, "Distant Town": 4, "Small Suburb": 7, "Midsize Suburb": 8, "Large Suburb":9, "Small City":12, "Midsize City":13, "Large City":14}
+    desiredUrbanization = urbanization[desiredUrbanization]
+
+    cc_dict = {"Very Small":1, "Small":2, "Medium":3, "Large":4}
+    desiredSchoolSize = cc_dict[desiredSchoolSize]
 
     # Normalize needed algorithm columns and user inputs
     user_norm = {'sat_avg': userSAT, 'actcmmid': userACT, 'ccsizset':desiredSchoolSize, 'locale':desiredUrbanization,
@@ -88,6 +100,8 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
 
     for col in cols:
         normalize_col_and_user(df, user_norm, col)
+
+
 
 
     ## Algorithm calculations:
@@ -156,13 +170,13 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['repay_e'] = 0
     else:
         # Calculate years to repayment
-        if familyIncome == '0-30000':
+        if familyIncome == '$0-30K':
             coa = df['npt41'] * 4
-        elif familyIncome == '30001-48000':
+        elif familyIncome == '$30K-$48K':
             coa = df['npt42'] * 4
-        elif familyIncome == '48001-75000':
+        elif familyIncome == '$48K-$75K':
             coa = df['npt43'] * 4
-        elif familyIncome == '75001-111000':
+        elif familyIncome == '$75K-$110K':
             coa = df['npt44'] * 4
         else:
             coa = df['npt45'] * 4
@@ -302,8 +316,8 @@ def normalize_col_and_user(df, user_norm, col):
     :param user_norm: dictionary of column name: user variable
     :param col: column name to normalize
     """
-    cmin = df[col].min()
-    cmax = df[col].max()
+    cmin = df[col].min(skipna=True)
+    cmax = df[col].max(skipna=True)
     df[col] = (df[col] - cmin) / (cmax - cmin)
     user_norm[col] = (user_norm[col] - cmin) / (cmax - cmin)
 
