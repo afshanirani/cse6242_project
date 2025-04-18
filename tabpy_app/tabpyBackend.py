@@ -130,7 +130,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         desired_lon = location.longitude
         userStabbr = location.raw.get('state_code')
 
-        df['miles_away'] = geodesic((desired_lat, desired_lon), (df['latitude'], df['longitude']))
+        df['miles_away'] = geodesic((float(desired_lat), float(desired_lon)), (float(df['latitude']), float(df['longitude'])))
 
         # Normalize radius and miles_away
         normalize_col_and_user(df, user_norm, 'miles_away')
