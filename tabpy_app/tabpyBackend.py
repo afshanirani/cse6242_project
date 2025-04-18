@@ -187,18 +187,18 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     else:
         # Calculate years to repayment
         if familyIncome == '$0-30K':
-            coa = df['npt41'] * 4
+            df['coa'] = df['npt41'] * 4
         elif familyIncome == '$30K-$48K':
-            coa = df['npt42'] * 4
+            df['coa'] = df['npt42'] * 4
         elif familyIncome == '$48K-$75K':
-            coa = df['npt43'] * 4
+            df['coa'] = df['npt43'] * 4
         elif familyIncome == '$75K-$110K':
-            coa = df['npt44'] * 4
+            df['coa'] = df['npt44'] * 4
         else:
-            coa = df['npt45'] * 4
+            df['coa'] = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
-        df['years'] = df['earnings'].apply(lambda e: compute_years_to_repay(e, coa))
+        df['years'] = df['earnings'].apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']), axis=1)
 
         # for i, rpmt in enumerate(df['earnings']):
         #     coa -= (rpmt[i] * .1)
