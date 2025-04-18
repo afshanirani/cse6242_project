@@ -198,10 +198,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
             coa = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
-        df['years'] = df['earnings'].apply(lambda earnings: next(
-            (i + 2 for i in range(len(earnings)) if sum(earnings[:i + 1]) * 0.1 >= coa),
-            21
-        ))
+        df['years'] = df['earnings'].apply(lambda e: compute_years_to_repay(e, coa))
 
         # for i, rpmt in enumerate(df['earnings']):
         #     coa -= (rpmt[i] * .1)
@@ -216,8 +213,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['years'] = (df['years'] - 1) / 20
         yearsRepay = (yearsRepay - 1) / 20
 
-        df['repay_e'] = np.where(df['years'] > yearsRepay,
-            (yearsRepay - df['years']) ** 2,0)
+        df['repay_e'] = np.where(df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2,0)
 
         #df['repay_e'] = (df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2, 0)
 
@@ -344,6 +340,18 @@ def normalize_col_and_user(df, user_norm, col):
     cmax = df[col].max(skipna=True)
     df[col] = (df[col] - cmin) / (cmax - cmin)
     user_norm[col] = (user_norm[col] - cmin) / (cmax - cmin)
+
+def compute_years_to_repay(earnings, coa):
+    coa_left = coa
+    for i, rpmt in enumerate('earnings'):
+        coa_left -= rpmt[i] * .1
+        if coa_left <= 0:
+            return i + 2
+    # If still haven't broken even, set years to 21
+    return 21
+
+
+
 
 
 client.deploy('retrieveSchools',
