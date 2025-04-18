@@ -40,7 +40,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     ## Data cleaning and prep:
 
     # Filter out closed institutions and graduate schools, 2-year schools
-    df = df[(~df['ccsizset'].isin([1, 2, 3, 4, 5, 18])) & (df['curroper'] == 1)]
+    #df = df[(~df['ccsizset'].isin([1, 2, 3, 4, 5, 18])) & (df['curroper'] == 1)]
 
     # Change values of Carnegie Class (1=very small, 2=small, 3=medium, 4=large, 4.5=very large
     df['ccsizset'] = df['ccsizset'].replace(
