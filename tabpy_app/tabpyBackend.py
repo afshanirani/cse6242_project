@@ -128,7 +128,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         location = geo.geocode({'postalcode': userZIP, 'country': 'US'})
         desired_lat = location.latitude
         desired_lon = location.longitude
-        userStabbr = location.get('state_code')
+        userStabbr = location.raw.get('state_code')
 
         df['miles_away'] = geodesic((desired_lat, desired_lon), (df['latitude'], df['longitude']))
 
