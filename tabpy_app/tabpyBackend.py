@@ -131,7 +131,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         userStabbr = location.raw.get('state_code')
 
         df['latitude'] = df['latitude'].fillna(0.0)
-        df['longitude'] = df['longtitude'].fillna(0.0)
+        df['longitude'] = df['longitude'].fillna(0.0)
 
         df['miles_away'] = df.apply(lambda row: geodesic((desired_lat, desired_lon), (row['latitude'], row['longitude'])).miles, axis=1)
 
