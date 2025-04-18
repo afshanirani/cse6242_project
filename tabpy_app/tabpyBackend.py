@@ -138,7 +138,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         # Normalize radius and miles_away
         normalize_col_and_user(df, user_norm, 'miles_away')
 
-        df['radius_e'] = (df['miles_away'] - searchRadius) ** 2 if df['miles_away'] > searchRadius else 0
+        df['radius_e'] = np.where(df['miles_away'] > searchRadius, (df['miles_away'] - searchRadius) ** 2, 0)
 
     # desiredUrbanization calculations
     if desiredUrbanization is None:
@@ -150,13 +150,13 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     if userSAT is None:
         df['sat_e'] = 0
     else:
-        df['sat_e'] = (df['sat_avg'] - user_norm['sat_avg']) if df['sat_avg'] > user_norm['sat_avg'] else 0
+        df['sat_e'] = np.where(df['sat_avg'] > user_norm['sat_avg'], (df['sat_avg'] - user_norm['sat_avg']) **2, 0)
 
     # ACT score calculation
     if userACT is None:
         df['act_e'] = 0
     else:
-        df['act_e'] = (df['actcmmid'] - userACT) ** 2 if df['actcmmid'] > user_norm['actcmmid'] else 0
+        df['act_e'] = np.where(df['actcmmid'] > user_norm['actcmmid'], (df['actcmmid'] - userACT) ** 2, 0)
 
     # Major calculations (converts major to corresponding column using get_major_col)
     if major is None:
@@ -176,9 +176,9 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['tuition_e'] = 0
     else:
         if df['stabbr'] == userStabbr:
-            df['tuition_e'] = (user_norm['tuition_in'] - df['tuition_in']) ** 2 if df['tuition_in'] > tuitionBudget else 0
+            df['tuition_e'] = np.where(df['tuition_in'] > tuitionBudget, (user_norm['tuition_in'] - df['tuition_in']) ** 2, 0)
         else:
-            df['tuition_e'] = (user_norm['tuition_out'] - df['tuition_out']) ** 2 if df['tuition_out'] > tuitionBudget else 0
+            df['tuition_e'] = np.where(df['tuition_out'] > tuitionBudget, (user_norm['tuition_out'] - df['tuition_out']) ** 2, 0)
 
     # Years to repayment calculations
     if yearsRepay is None:
@@ -210,7 +210,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['years'] = (df['years'] - 1) / 20
         yearsRepay = (yearsRepay - 1) / 20
 
-        df['repay_e'] = (yearsRepay - df['years']) ** 2 if df['years'] > yearsRepay else 0
+        df['repay_e'] = (df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2, 0)
 
 
     # Perform the actual Euclidean distance calculation:
