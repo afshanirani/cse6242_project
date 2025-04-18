@@ -177,7 +177,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     else:
         df['tuition_e'] = np.where(df['stabbr'] == userStabbr,
             np.where(df['tuition_in'] > tuitionBudget, (user_norm['tuition_in'] - df['tuition_in']) ** 2, 0),
-            np.where(df['tuition_out'] > tuitionBudget, (user_norm['tuition_out'] - df['tuition_out']) ** 2, 0), 0)
+            np.where(df['tuition_out'] > tuitionBudget, (user_norm['tuition_out'] - df['tuition_out']) ** 2, 0))
 
     # Years to repayment calculations
     if yearsRepay is None:
