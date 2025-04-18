@@ -87,11 +87,23 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['earnings'] = df.apply(perform_polynomial, axis=1)
 
     ## Process user inputs:
-    urbanization = {"Distant Rural": 1, "Distant Town": 4, "Small Suburb": 7, "Midsize Suburb": 8, "Large Suburb":9, "Small City":12, "Midsize City":13, "Large City":14}
-    desiredUrbanization = urbanization[desiredUrbanization]
+    urban_dict = {"Distant Rural": 1, "Distant Town": 4, "Small Suburb": 7, "Midsize Suburb": 8, "Large Suburb":9, "Small City":12, "Midsize City":13, "Large City":14}
+    desiredUrbanization = urban_dict[desiredUrbanization[0]]
 
     cc_dict = {"Very Small":1, "Small":2, "Medium":3, "Large":4}
     desiredSchoolSize = cc_dict[desiredSchoolSize]
+
+    userSAT = userSAT[0]
+    userACT = userACT[0]
+    tuitionBudget = tuitionBudget[0]
+    searchRadius = searchRadius[0]
+    userZIP = userZIP[0]
+    familyIncome = familyIncome[0]
+    major = major[0]
+    yearsRepay = yearsRepay[0]
+    weight1 = weight1[0]
+    weight2 = weight2[0]
+    weight3= weight3[0]
 
     # Normalize needed algorithm columns and user inputs
     user_norm = {'sat_avg': userSAT, 'actcmmid': userACT, 'ccsizset':desiredSchoolSize, 'locale':desiredUrbanization,
