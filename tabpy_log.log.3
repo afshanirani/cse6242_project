@@ -1,0 +1,108 @@
+2025-04-15,22:21:14 [ERROR] (custom_query_object.py:custom_query_object:60): Exception hit when running custom query, error: retrieveSchools() takes from 1 to 13 positional arguments but 76 were given
+Traceback (most recent call last):
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_tools/custom_query_object.py", line 58, in query
+    ret = self.custom_query(*args, **kwargs)
+TypeError: retrieveSchools() takes from 1 to 13 positional arguments but 76 were given
+2025-04-15,22:21:14 [ERROR] (python_service.py:python_service:272): retrieveSchools() takes from 1 to 13 positional arguments but 76 were given
+Traceback (most recent call last):
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_server/psws/python_service.py", line 266, in query
+    result = pred_obj.query(*params)
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_tools/custom_query_object.py", line 58, in query
+    ret = self.custom_query(*args, **kwargs)
+TypeError: retrieveSchools() takes from 1 to 13 positional arguments but 76 were given
+2025-04-15,22:21:14 [ERROR] (python_service.py:python_service:274): TypeError : retrieveSchools() takes from 1 to 13 positional arguments but 76 were given
+2025-04-15,22:21:14 [DEBUG] (base_handler.py:base_handler:115): Query info: QueryFailed(uri='retrieveSchools', error='TypeError : retrieveSchools() takes from 1 to 13 positional arguments but 76 were given')
+2025-04-15,22:21:14 [ERROR] (base_handler.py:base_handler:115): Failed query, response: QueryFailed(uri='retrieveSchools', error='TypeError : retrieveSchools() takes from 1 to 13 positional arguments but 76 were given')
+2025-04-15,22:21:14 [ERROR] (base_handler.py:base_handler:115): Responding with status=500, message="Error querying function 'retrieveSchools'", info="{'uri': 'retrieveSchools', 'error': 'TypeError : retrieveSchools() takes from 1 to 13 positional arguments but 76 were given', 'type': 'QueryFailed'}"
+2025-04-15,22:21:14 [ERROR] (web.py:web:2348): 500 POST /query/retrieveSchools (::1) 70.26ms
+2025-04-15,22:21:14 [DEBUG] (connectionpool.py:connectionpool:452): http://localhost:9004 "POST /query/retrieveSchools HTTP/1.1" 500 215
+2025-04-15,22:21:14 [ERROR] (base_handler.py:base_handler:115): Traceback (most recent call last):
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_server/handlers/evaluation_plane_handler.py", line 178, in post
+    yield self._post_impl()
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tornado/gen.py", line 767, in run
+    value = future.result()
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tornado/gen.py", line 780, in run
+    yielded = self.gen.throw(exc)
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_server/handlers/evaluation_plane_handler.py", line 118, in _post_impl
+    result = yield self._call_subprocess(function_to_evaluate, arguments)
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tornado/gen.py", line 767, in run
+    value = future.result()
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tornado/gen.py", line 780, in run
+    yielded = self.gen.throw(exc)
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tabpy/tabpy_server/handlers/evaluation_plane_handler.py", line 212, in _call_subprocess
+    ret = yield gen.with_timeout(timedelta(seconds=self.eval_timeout), future)
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/site-packages/tornado/gen.py", line 767, in run
+    value = future.result()
+  File "/Users/michaelkelley/opt/anaconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "<string>", line 4, in _user_script
+KeyError: 'response'
+
+2025-04-15,22:21:14 [ERROR] (base_handler.py:base_handler:115): Responding with status=404, message="Error processing script", info="The endpoint you're trying to query did not respond. Please make sure the endpoint exists and the correct set of arguments are provided."
+2025-04-15,22:21:14 [WARNING] (web.py:web:2348): 404 POST /evaluate (::1) 160.23ms
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking if need to handle authentication
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Handling authentication
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authentication is not a required feature for API "v1"
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking request headers for authentication data
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authorization header not found
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): authentication not required, username and password are none
+2025-04-15,22:22:21 [DEBUG] (state.py:state:526): Collecting Access-Control-Allow-Origin from state file ...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Description' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Creation Time' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value '0'
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Name' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value 'TabPy Server'
+2025-04-15,22:22:21 [INFO] (web.py:web:2348): 200 GET /info (::1) 10.48ms
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking if need to handle authentication
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Handling authentication
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authentication is not a required feature for API "v1"
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking request headers for authentication data
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authorization header not found
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): authentication not required, username and password are none
+2025-04-15,22:22:21 [DEBUG] (state.py:state:526): Collecting Access-Control-Allow-Origin from state file ...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Processing POST request...
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): function to evaluate=def _user_script(tabpy, _arg1, _arg10, _arg11, _arg12, _arg13, _arg14, _arg15, _arg16, _arg17, _arg18, _arg19, _arg2, _arg20, _arg21, _arg22, _arg23, _arg24, _arg25, _arg26, _arg27, _arg28, _arg29, _arg3, _arg30, _arg31, _arg32, _arg33, _arg34, _arg35, _arg36, _arg37, _arg38, _arg39, _arg4, _arg40, _arg41, _arg42, _arg43, _arg44, _arg45, _arg46, _arg47, _arg48, _arg49, _arg5, _arg50, _arg51, _arg52, _arg53, _arg54, _arg55, _arg56, _arg57, _arg58, _arg59, _arg6, _arg60, _arg61, _arg62, _arg63, _arg64, _arg65, _arg66, _arg67, _arg68, _arg69, _arg7, _arg70, _arg71, _arg72, _arg73, _arg74, _arg75, _arg76, _arg8, _arg9):
+  
+ 
+ return tabpy.query('retrieveSchools',_arg1,_arg2,_arg3,_arg4,_arg5,_arg6,_arg7,_arg8,_arg9,_arg10,
+ _arg11,_arg12,_arg13,_arg14,_arg15,_arg16,_arg17,_arg18,_arg19,_arg20,
+ _arg21,_arg22,_arg23,_arg24,_arg25,_arg26,_arg27,_arg28,_arg29,_arg30,
+ _arg31,_arg32,_arg33,_arg34,_arg35,_arg36,_arg37,_arg38,_arg39,_arg40,
+ _arg41,_arg42,_arg43,_arg44,_arg45,_arg46,_arg47,_arg48,_arg49,_arg50,
+ _arg51,_arg52,_arg53,_arg54,_arg55,_arg56,_arg57,_arg58,_arg59,_arg60,
+ _arg61,_arg62,_arg63,_arg64,_arg65,_arg66,_arg67,_arg68,_arg69,_arg70,
+ _arg71,_arg72,_arg73,_arg74,_arg75,_arg76)['response']
+
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Querying http://localhost:9004/query/retrieveSchools...
+2025-04-15,22:22:21 [DEBUG] (connectionpool.py:connectionpool:227): Starting new HTTP connection (1): localhost:9004
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking if need to handle authentication
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Handling authentication
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authentication is not a required feature for API "v1"
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Checking request headers for authentication data
+2025-04-15,22:22:21 [INFO] (base_handler.py:base_handler:115): Authorization header not found
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): authentication not required, username and password are none
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Processing POST for /query/retrieveSchools...
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Processing query retrieveSchools...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:526): Collecting Access-Control-Allow-Origin from state file ...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (state.py:state:628): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2025-04-15,22:22:21 [DEBUG] (state.py:state:650): Returning value ''
+2025-04-15,22:22:21 [DEBUG] (base_handler.py:base_handler:115): Collecting query info for retrieveSchools...
+2025-04-15,22:22:21 [DEBUG] (python_service.py:python_service:236): Querying Python service retrieveSchools...
+2025-04-15,22:22:21 [DEBUG] (python_service.py:python_service:248): Found object {'version': 1, 'type': 'model', 'endpoint_obj': <tabpy.tabpy_tools.custom_query_object.CustomQueryObject object at 0x7f7e48be5790>, 'status': 'LoadSuccessful', 'last_error': None}
