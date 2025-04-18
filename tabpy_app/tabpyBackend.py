@@ -198,20 +198,28 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
             coa = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
-        for i, rpmt in enumerate(df['earnings']):
-            coa -= (rpmt[i] * .1)
-            if coa <= 0:
-                df['years'] = i + 2
-                break
-        # If still haven't broken even, set years to 21
-        if coa > 0:
-            df['years'] = 21
+        df['years'] = df['earnings'].apply(lambda earnings: next(
+            (i + 2 for i in range(len(earnings)) if sum(earnings[:i + 1]) * 0.1 >= coa),
+            21
+        ))
+
+        # for i, rpmt in enumerate(df['earnings']):
+        #     coa -= (rpmt[i] * .1)
+        #     if coa <= 0:
+        #         df['years'] = i + 2
+        #         break
+        # # If still haven't broken even, set years to 21
+        # if coa > 0:
+        #     df['years'] = 21
 
         # Normalize years and yearsRepay
         df['years'] = (df['years'] - 1) / 20
         yearsRepay = (yearsRepay - 1) / 20
 
-        df['repay_e'] = (df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2, 0)
+        df['repay_e'] = np.where(df['years'] > yearsRepay,
+            (yearsRepay - df['years']) ** 2,0)
+
+        #df['repay_e'] = (df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2, 0)
 
 
     # Perform the actual Euclidean distance calculation:
