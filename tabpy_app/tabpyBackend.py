@@ -343,8 +343,8 @@ def normalize_col_and_user(df, user_norm, col):
 
 def compute_years_to_repay(earnings, coa):
     coa_left = coa
-    for i, rpmt in enumerate('earnings'):
-        coa_left -= rpmt[i] * .1
+    for i, rpmt in enumerate(earnings):
+        coa_left -= rpmt[i] * 0.1
         if coa_left <= 0:
             return i + 2
     # If still haven't broken even, set years to 21
