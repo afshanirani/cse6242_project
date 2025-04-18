@@ -242,19 +242,36 @@ def perform_polynomial(row):
     :return: list of earnings from year 2-20
     """
     # Get only the earning rows
-    row_earn = row[
-        ['md_earn6', 'md_earn7', 'md_earn8', 'md_earn9', 'md_earn10', 'md_earn11']]
+    # row_earn = row[
+    #     ['md_earn6', 'md_earn7', 'md_earn8', 'md_earn9', 'md_earn10', 'md_earn11']]
+    # earn_cols = [f'md_earn{i}' for i in range(6, 12)]
+    #
+    # # Check if empty and populate empty earnings
+    # if row_earn.empty:
+    #     return None
+    # for i, col in enumerate(earn_cols):
+    #     if pd.isnull(row_earn[col]):
+    #         if i == 0:
+    #             row_earn[col] = row_earn[earn_cols].bfill(axis=1).iloc[:, 0]
+    #         else:
+    #             row_earn[col] = row_earn[earn_cols].fill(axis=1).iloc[:, 0]
     earn_cols = [f'md_earn{i}' for i in range(6, 12)]
+    row_earn = row[earn_cols]
 
-    # Check if empty and populate empty earnings
-    if row_earn.empty:
-        return None
-    for i, col in enumerate(earn_cols):
-        if pd.isnull(row_earn[col]):
-            if i == 0:
-                row_earn[col] = row_earn[earn_cols].bfill(axis=1).iloc[:, 0]
-            else:
-                row_earn[col] = row_earn[earn_cols].fill(axis=1).iloc[:, 0]
+    # Convert to DataFrame (1 row) so you can apply axis=1 operations
+    row_earn_df = pd.DataFrame([row_earn])
+
+    # Fill missing values across the row (horizontally)
+    row_earn_filled = row_earn_df.bfill(axis=1).ffill(axis=1)
+
+    # Now use the filled values for your polynomial regression
+    earnings = row_earn_filled.values.flatten().tolist()
+
+    if all(pd.isnull(earnings)):
+        return None  # Still all NaNs? Return None
+    else:
+        # Return filled earnings list for regression
+        return earnings
 
     # Train the polynomial model
     X = np.arange(2, 8).reshape(-1, 1)
@@ -327,10 +344,18 @@ def normalize_col_and_user(df, user_norm, col):
     """
     cmin = df[col].min(skipna=True)
     cmax = df[col].max(skipna=True)
-    df[col] = (df[col] - cmin) / (cmax - cmin)
-    user_norm[col] = (user_norm[col] - cmin) / (cmax - cmin)
+
+    if cmax == cmin:
+        df[col] = 0.5  # or 0.0, depending on your use case
+        user_norm[col] = 0.5
+    else:
+        df[col] = (df[col] - cmin) / (cmax - cmin)
+        user_norm[col] = (user_norm[col] - cmin) / (cmax - cmin)
 
 def compute_years_to_repay(earnings, coa):
+    if not earnings or not isinstance(earnings, (list, tuple)):
+        return 21
+
     coa_left = coa
     for i, rpmt in enumerate(earnings):
         coa_left -= rpmt * 0.1
