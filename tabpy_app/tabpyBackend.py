@@ -215,8 +215,6 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
 
         df['repay_e'] = np.where(df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2,0)
 
-        #df['repay_e'] = (df['years'] > yearsRepay, (yearsRepay - df['years']) ** 2, 0)
-
 
     # Perform the actual Euclidean distance calculation:
     weight_cols = {
@@ -344,7 +342,7 @@ def normalize_col_and_user(df, user_norm, col):
 def compute_years_to_repay(earnings, coa):
     coa_left = coa
     for i, rpmt in enumerate(earnings):
-        coa_left -= rpmt[i] * 0.1
+        coa_left -= rpmt * 0.1
         if coa_left <= 0:
             return i + 2
     # If still haven't broken even, set years to 21
