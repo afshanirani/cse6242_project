@@ -15,9 +15,9 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
                     major,tuitionBudget, yearsRepay,weight1,weight2,weight3,school_name,stabbr,latitude, longitude,tuition_in,
                     tuition_out,ccsizset,curroper, locale,md_earn10,md_earn11,md_earn6, md_earn7,md_earn8, md_earn9,
                     npt41_priv, npt41_pub, npt42_priv,npt42_pub, npt43_priv, npt43_pub,npt44_priv, npt44_pub,npt45_priv,
-                    npt45_pub,Pcip01,Pcip03,Pcip04,Pcip05,Pcip09,Pcip10,Pcip11,Pcip12,Pcip13,Pcip14,Pcip15,Pcip16,
-                    Pcip19,Pcip22,Pcip23,Pcip24,Pcip25,Pcip26,Pcip27,Pcip29,Pcip30,Pcip31,Pcip38,Pcip39,Pcip40,Pcip41,
-                    Pcip42,Pcip43,Pcip44,Pcip45,Pcip46,Pcip47,Pcip48,Pcip49,Pcip50,Pcip51,Pcip52,Pcip54,sat_avg,actcmmid):
+                    npt45_pub,PCIP01,PCIP03,PCIP04,PCIP05,PCIP09,PCIP10,PCIP11,PCIP12,PCIP13,PCIP14,PCIP15,PCIP16,
+                    PCIP19,PCIP22,PCIP23,PCIP24,PCIP25,PCIP26,PCIP27,PCIP29,PCIP30,PCIP31,PCIP38,PCIP39,PCIP40,PCIP41,
+                    PCIP42,PCIP43,PCIP44,PCIP45,PCIP46,PCIP47,PCIP48,PCIP49,PCIP50,PCIP51,PCIP52,PCIP54,sat_avg,actcmmid):
 
 
     ## Preprocessing:
@@ -29,13 +29,13 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         "md_earn11": md_earn11, "md_earn6": md_earn6, "md_earn7": md_earn7, "md_earn8": md_earn8, "md_earn9": md_earn9,
         "npt41_priv": npt41_priv, "npt41_pub": npt41_pub, "npt42_priv": npt42_priv, "npt42_pub": npt42_pub, "npt43_priv": npt43_priv,
         "npt43_pub": npt43_pub, "npt44_priv": npt44_priv, "npt44_pub": npt44_pub, "npt45_priv": npt45_priv, "npt45_pub": npt45_pub,
-        "Pcip01": Pcip01, "Pcip03": Pcip03, "Pcip04": Pcip04, "Pcip05": Pcip05, "Pcip09": Pcip09, "Pcip10": Pcip10,
-        "Pcip11": Pcip11, "Pcip12": Pcip12, "Pcip13": Pcip13, "Pcip14": Pcip14, "Pcip15": Pcip15, "Pcip16": Pcip16,
-        "Pcip19": Pcip19, "Pcip22": Pcip22, "Pcip23": Pcip23, "Pcip24": Pcip24, "Pcip25": Pcip25, "Pcip26": Pcip26,
-        "Pcip27": Pcip27, "Pcip29": Pcip29, "Pcip30": Pcip30, "Pcip31": Pcip31, "Pcip38": Pcip38, "Pcip39": Pcip39,
-        "Pcip40": Pcip40, "Pcip41": Pcip41, "Pcip42": Pcip42, "Pcip43": Pcip43, "Pcip44": Pcip44, "Pcip45": Pcip45,
-        "Pcip46": Pcip46, "Pcip47": Pcip47, "Pcip48": Pcip48, "Pcip49": Pcip49, "Pcip50": Pcip50, "Pcip51": Pcip51,
-        "Pcip52": Pcip52, "Pcip54": Pcip54, "sat_avg": sat_avg, "actcmmid": actcmmid
+        "PCIP01": PCIP01, "PCIP03": PCIP03, "PCIP04": PCIP04, "PCIP05": PCIP05, "PCIP09": PCIP09, "PCIP10": PCIP10,
+        "PCIP11": PCIP11, "PCIP12": PCIP12, "PCIP13": PCIP13, "PCIP14": PCIP14, "PCIP15": PCIP15, "PCIP16": PCIP16,
+        "PCIP19": PCIP19, "PCIP22": PCIP22, "PCIP23": PCIP23, "PCIP24": PCIP24, "PCIP25": PCIP25, "PCIP26": PCIP26,
+        "PCIP27": PCIP27, "PCIP29": PCIP29, "PCIP30": PCIP30, "PCIP31": PCIP31, "PCIP38": PCIP38, "PCIP39": PCIP39,
+        "PCIP40": PCIP40, "PCIP41": PCIP41, "PCIP42": PCIP42, "PCIP43": PCIP43, "PCIP44": PCIP44, "PCIP45": PCIP45,
+        "PCIP46": PCIP46, "PCIP47": PCIP47, "PCIP48": PCIP48, "PCIP49": PCIP49, "PCIP50": PCIP50, "PCIP51": PCIP51,
+        "PCIP52": PCIP52, "PCIP54": PCIP54, "sat_avg": sat_avg, "actcmmid": actcmmid
     })
 
     ## Data cleaning and prep:
@@ -282,7 +282,7 @@ def perform_polynomial(row):
     return ys
 
 def get_major_col(major):
-    degree_to_pcip = {
+    degree_to_PCIP = {
         "Agriculture, Agriculture Operations, And Related Sciences": "PCIP01",
         "Natural Resources And Conservation": "PCIP03",
         "Architecture And Related Services": "PCIP04",
