@@ -106,9 +106,9 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     weight3= weight3[0]
 
     # Normalize needed algorithm columns and user inputs
-    user_norm = {'sat_avg': userSAT,'actcmmid': userACT , 'ccsizset':desiredSchoolSize, 'locale':desiredUrbanization,
+    user_norm = {'sat_avg': userSAT, 'actcmmid': userACT, 'ccsizset':desiredSchoolSize, 'locale':desiredUrbanization,
                  'tuition_in': tuitionBudget, 'tuition_out': tuitionBudget,'miles_away': searchRadius}
-    cols = ['sat_avg','actcmmid','ccsizset', 'locale', 'tuition_in']
+    cols = ['sat_avg', 'actcmmid', 'ccsizset', 'locale', 'tuition_in']
 
     for col in cols:
         normalize_col_and_user(df, user_norm, col)
@@ -150,13 +150,13 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     if userSAT is None:
         df['sat_e'] = 0
     else:
-        df['sat_e'] = (df['sat_avg'] - user_norm['sat_avg']) **2
+        df['sat_e'] = np.where(df['sat_avg'] > user_norm['sat_avg'], (df['sat_avg'] - user_norm['sat_avg']) **2, 0)
 
     # ACT score calculation
     if userACT is None:
         df['act_e'] = 0
     else:
-        df['act_e'] = (df['actcmmid'] - user_norm['userACT']) ** 2
+        df['act_e'] = np.where(df['actcmmid'] > user_norm['actcmmid'], (df['actcmmid'] - user_norm['actcmmid']) ** 2, 0)
 
     # Major calculations (converts major to corresponding column using get_major_col)
     if major is None:
