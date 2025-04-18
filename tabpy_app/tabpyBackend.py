@@ -238,7 +238,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     df['score'] = np.sqrt(df['score'])
 
     # return score for each school
-    return df['score']
+    return df['score'].to_list()
 
 
 def perform_polynomial(row):
