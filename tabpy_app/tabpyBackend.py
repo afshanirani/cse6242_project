@@ -235,7 +235,7 @@ def perform_polynomial(row):
     # Get only the earning rows
     row_earn = row[
         ['md_earn6', 'md_earn7', 'md_earn8', 'md_earn9', 'md_earn10', 'md_earn11']]
-    earn_cols = [f'MD_EARN_WNE_P{i}' for i in range(6, 12)]
+    earn_cols = [f'md_earn{i}' for i in range(6, 12)]
 
     # Check if empty and populate empty earnings
     if row_earn.empty:
