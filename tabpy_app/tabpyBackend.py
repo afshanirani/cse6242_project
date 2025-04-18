@@ -150,13 +150,13 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     if userSAT is None:
         df['sat_e'] = 0
     else:
-        df['sat_e'] = np.where(df['sat_avg'] > user_norm['sat_avg'], (df['sat_avg'] - user_norm['sat_avg']) **2, 0)
+        df['sat_e'] = df['sat_avg'] - user_norm['sat_avg']
 
     # ACT score calculation
     if userACT is None:
         df['act_e'] = 0
     else:
-        df['act_e'] = np.where(df['actcmmid'] > user_norm['actcmmid'], (df['actcmmid'] - user_norm['actcmmid']) ** 2, 0)
+        df['act_e'] = df['actcmmid'] - user_norm['actcmmid']
 
     # Major calculations (converts major to corresponding column using get_major_col)
     if major is None:
