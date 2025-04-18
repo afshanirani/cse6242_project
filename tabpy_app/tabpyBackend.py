@@ -3,7 +3,6 @@ import json
 import sqlite3
 import pandas as pd
 import numpy as np
-from math import sqrt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from geopy.distance import geodesic
@@ -196,7 +195,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
             df['coa'] = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
-        df['years'] = df['earnings'].apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']))
+        df['years'] = df.apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']), axis=1)
 
         # for i, rpmt in enumerate(df['earnings']):
         #     coa -= (rpmt[i] * .1)
@@ -236,7 +235,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
     for key, col in weight_cols.items():
         df['score'] += df[col] * weights[key]
 
-    df['score'] = sqrt(df['score'])
+    df['score'] = np.sqrt(df['score'])
 
     # return score for each school
     return df['score']
