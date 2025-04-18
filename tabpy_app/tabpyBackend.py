@@ -176,10 +176,8 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
         df['tuition_e'] = 0
     else:
         df['tuition_e'] = np.where(df['stabbr'] == userStabbr,
-            np.where(df['tuition_in'] > tuitionBudget, (user_norm['tuition_in'] - df['tuition_in']) ** 2, 0), 0)
-        df['tuition_e'] = np.where(df['stabbr'] == userStabbr,
-                                   np.where(df['tuition_out'] > tuitionBudget,
-                                            (user_norm['tuition_out'] - df['tuition_out']) ** 2, 0), 0)
+            np.where(df['tuition_in'] > tuitionBudget, (user_norm['tuition_in'] - df['tuition_in']) ** 2, 0),
+            np.where(df['tuition_out'] > tuitionBudget, (user_norm['tuition_out'] - df['tuition_out']) ** 2, 0), 0)
 
     # Years to repayment calculations
     if yearsRepay is None:
@@ -198,7 +196,7 @@ def retrieveSchools(userZIP, searchRadius, desiredUrbanization, desiredSchoolSiz
             df['coa'] = df['npt45'] * 4
 
         # Calculate years to repay given total coa and projected earnings
-        df['years'] = df['earnings'].apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']), axis=1)
+        df['years'] = df['earnings'].apply(lambda row: compute_years_to_repay(row['earnings'], row['coa']))
 
         # for i, rpmt in enumerate(df['earnings']):
         #     coa -= (rpmt[i] * .1)
